@@ -9,8 +9,6 @@ const path = require('path');
 const PORT = process.env.PORT || 3001;
 const uuid = require('uuid')
 
-let db = require('./db/db.json')
-
 const app = express()
 
 app.use(express.urlencoded({ extended: true }));
@@ -18,20 +16,35 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
+
+
+let db = require('./db/db.json')
+
+// reads db.json
+let notesData = fs.readFileSync('./db/db.json')
+
+// parses notesData
+let notesDataJSON = JSON.parse(notesData)
+
+
+
+
 function writeToDB(note) {
     fs.appendFileSync('./db/db.json', JSON.stringify(note));
 }
 
 app.get('/', (req, res) =>
   //res.sendFile(path.join(__dirname, './public/index.html'))
-  res.writeFileSync(path.join(__dirname, './public/index.html'))
+  res.sendFile(path.join(__dirname, './public/index.html'))
 );
 
 app.get('/notes', (req, res) => {
 
-    res.sendFile(path.join(__dirname, './public/notes.html'))
-    // Log our request to the terminal
-    console.info(`${req.method} request received to get reviews`);
+  
+  res.sendFile(path.join(__dirname, './public/notes.html'))
+    // // Log our request to the terminal
+    // console.info(`${req.method} request received to get reviews`);
+
 }
   
  
@@ -39,18 +52,16 @@ app.get('/notes', (req, res) => {
 
 app.get('/api/notes', (req, res) => {
     console.log('/api/notes-get');
-    //console.log(res.json(db));
-    console.log(res);
+
+    let notesData = fs.readFileSync('./db/db.json', 'utf8')
+
+    res.json(JSON.parse(notesData));
+    //console.log(res.json(JSON.parse(notesData)));
+    console.log(res.body);
 });
 
-app.post('/notes', (req, res) => {
+app.post('/api/notes', (req, res) => {
     //res.sendFile(path.join(__dirname, './public/notes.html'));
-    let newNote = req.body;
-    console.log(req)
-    newNote.id = uuid.v1();
-    db.push(newNote);
-    writeToDB(db);
-    
 
     const newNotes = {
         title: req.body.title,
@@ -58,14 +69,13 @@ app.post('/notes', (req, res) => {
         note_id: uuid.v1()
       };
 
-    // req.body.title
-    // req.body.text
+      let notesData = fs.readFileSync('./db/db.json', 'utf8')
 
-      const reviewString = JSON.stringify(newNotes);
+      let notesDataJSON = JSON.parse(notesData);
+      notesDataJSON.push(newNotes)
 
-db.push(reviewString)
 
-      fs.writeFileSync(`./db/db.json`, reviewString, (err) =>
+      fs.writeFile(`./db/db.json`, JSON.stringify(notesDataJSON), (err) =>
       err
         ? console.error(err)
         : console.log(
