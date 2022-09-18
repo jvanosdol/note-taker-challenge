@@ -20,18 +20,10 @@ app.use(express.static('public'));
 
 let db = require('./db/db.json')
 
-// reads db.json
-let notesData = fs.readFileSync('./db/db.json')
 
-// parses notesData
-let notesDataJSON = JSON.parse(notesData)
-
-
-
-
-function writeToDB(note) {
-    fs.appendFileSync('./db/db.json', JSON.stringify(note));
-}
+// function writeToDB(note) {
+//     fs.appendFileSync('./db/db.json', JSON.stringify(note));
+// }
 
 app.get('/', (req, res) =>
   //res.sendFile(path.join(__dirname, './public/index.html'))
@@ -57,7 +49,7 @@ app.get('/api/notes', (req, res) => {
 
     res.json(JSON.parse(notesData));
     //console.log(res.json(JSON.parse(notesData)));
-    console.log(res.body);
+
 });
 
 app.post('/api/notes', (req, res) => {
@@ -83,11 +75,13 @@ app.post('/api/notes', (req, res) => {
           )
     );
 
+    return res.json(notesDataJSON )
+
 });
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
-    res.json(db);
+    //res.json(db);
     
 });
 
