@@ -45,40 +45,37 @@ app.post('/', (req, res) => {
   }
 
   // Save this new data into a Database --> Object, Array
-
-
   // send a response back
 })
 
 
 app.get('/notes', (req, res) => {
 
-  
   res.sendFile(path.join(__dirname, './public/notes.html'))
     // // Log our request to the terminal
     // console.info(`${req.method} request received to get reviews`);
 
-}
-  
- 
-);
+});
 
 app.get('/api/notes', (req, res) => {
+
     console.log('/api/notes-get');
 
     let notesData = fs.readFileSync('./db/db.json', 'utf8')
 
     res.json(JSON.parse(notesData));
+    //res.json(notesData.slice(1))
     //console.log(res.json(JSON.parse(notesData)));
 });
 
 app.post('/api/notes', (req, res) => {
+
     //res.sendFile(path.join(__dirname, './public/notes.html'));
 
     const newNotes = {
         title: req.body.title,
         text: req.body.text,
-        note_id: uuid
+        note_id: uuid.v4()
       };
 
       let notesData = fs.readFileSync('./db/db.json', 'utf8')
@@ -88,7 +85,7 @@ app.post('/api/notes', (req, res) => {
       notesDataJSON.push(newNotes)
 
 
-      fs.writeFile(`./db/db.json`, JSON.stringify(notesDataJSON), (err) =>
+      fs.writeFile('./db/db.json', JSON.stringify(notesDataJSON), (err) =>
       err
         ? console.error(err)
         : console.log(
@@ -100,9 +97,16 @@ app.post('/api/notes', (req, res) => {
 
 });
 
+
 app.delete('/api/notes/:id', (req, res) => {
 
   console.log(req.params.id)
+
+  const noteID = (req.params.id)
+
+  fs.readFile('./db/db.json', 'utf8')
+
+
   // console.log(req.body.name)
   // we want to capture what the ID is
 
