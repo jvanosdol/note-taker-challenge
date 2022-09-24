@@ -2,7 +2,6 @@
 // app.post('api/notes') each new review that we create is unique use uuid
 // app.delete('api/notes')
 
-
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -24,8 +23,6 @@ let db = require('./db/db.json')
 
 // HTTP MEthods
 // GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
-
-
 
 // function writeToDB(note) {
 //     fs.appendFileSync('./db/db.json', JSON.stringify(note));
@@ -134,20 +131,8 @@ app.delete('/api/notes/:id', (req, res) => {
 
   // console logging for debugging
   console.log(req.params.id)
-}
-  //const noteID = (req.params.id)
+});
 
-  //fs.readFile('./db/db.json', 'utf8')
-
-
-  // console.log(req.body.name)
-  
-
-);
-
-// function writeToDB(array) {
-//   fs.writeFileSync('./db/db.json', JSON.stringify(array));
-// }
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
