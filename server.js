@@ -7,7 +7,9 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const PORT = process.env.PORT || 3001;
-const uuid = require('uuid')
+const { v4: uuidv4 } = require('uuid')
+
+uuidv4();
 
 const app = express()
 
@@ -37,8 +39,11 @@ app.get('/', (req, res) => {
  // res.json({ "name": "Bull"});
 });
 
+
+// I don't think I need the below code snippet
 app.post('/', (req, res) => {
   // create temp object fill in with USER data
+
   const newObject = {
     first_name: req.body.first,
     last_name: req.body.last
@@ -75,7 +80,7 @@ app.post('/api/notes', (req, res) => {
     const newNotes = {
         title: req.body.title,
         text: req.body.text,
-        note_id: uuid.v4()
+        id: uuidv4()
       };
 
       let notesData = fs.readFileSync('./db/db.json', 'utf8')
@@ -100,14 +105,6 @@ app.post('/api/notes', (req, res) => {
 
 app.delete('/api/notes/:id', (req, res) => {
 
-  console.log(req.params.id)
-
-  const noteID = (req.params.id)
-
-  fs.readFile('./db/db.json', 'utf8')
-
-
-  // console.log(req.body.name)
   // we want to capture what the ID is
 
   // Make a request for our DATA --> fs.readFile()
@@ -116,7 +113,41 @@ app.delete('/api/notes/:id', (req, res) => {
 
   // Rewrite the data without the old record (Return(respond) with the Information)
 
-});
+  // grabs data from my database, then parses it
+  let notesData = fs.readFileSync('./db/db.json', 'utf8');
+  const dataJSON = JSON.parse(notesData);
+
+  // uses the parsed data and grabs a note by its specific 'id'
+  const newNote = dataJSON.filter((note) => {
+    return note.id !== req.params.id;
+  });
+
+  // updates and writes to the database
+  fs.writeFile('./db/db.json', JSON.stringify(newNote), (err, text) => {
+    if (err) {
+      console.log(err)
+      return;
+    }
+  })
+
+  res.json(newNote)
+
+  // console logging for debugging
+  console.log(req.params.id)
+}
+  //const noteID = (req.params.id)
+
+  //fs.readFile('./db/db.json', 'utf8')
+
+
+  // console.log(req.body.name)
+  
+
+);
+
+// function writeToDB(array) {
+//   fs.writeFileSync('./db/db.json', JSON.stringify(array));
+// }
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
