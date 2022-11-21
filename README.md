@@ -61,12 +61,11 @@ This app allows users to create custom notes, the user can create, delete, and u
 
 ## Deployed Page
 
-https://jvanosdol.github.io/daily-planner/
-
+https://secret-brook-83276.herokuapp.com/
 
 ## Github Repo
 
-https://github.com/jvanosdol/employee-tracker
+https://github.com/jvanosdol/note-taker-challenge
 
 
 ## How to Contribute
