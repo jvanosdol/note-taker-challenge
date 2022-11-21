@@ -41,11 +41,11 @@ git clone https://github.com/jvanosdol/employee-tracker
 - Note Taker Screenshot
 
 
-  ![screenshot](/assets/images/note-taker-home.png)
+  ![screenshot](/public/assets/images/note-taker-home.png)
   
-  ![screenshot](/assets/images/note-taker-menu.png)
+  ![screenshot](/public/assets/images/note-taker-menu.png)
 
-  ![screenshot](/assets/images/note-taker-item.png)
+  ![screenshot](/public/assets/images/note-taker-item.png)
 
 
 ## Credits
